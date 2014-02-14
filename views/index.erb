@@ -1,0 +1,40 @@
+<html> 
+    <head>
+        <title>Hozumi Cart 3</title>
+        <link rel="shortcut icon" href="https://dl.dropboxusercontent.com/u/224715403/images/favicons/hozumicart3/favicon.ico">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript" ></script>
+        <script>
+        <!--
+        $(document).ready(function(){
+            var changeImgUrl = function() {
+                var url = "<%= request.url + "cart" %>?letter=" + $("#one").val();
+                if ($("#color").val() != "") {
+                    url = url + "&color=" + $("#color").val();
+                }
+                $("#gif").attr("src", url);
+            };
+            $("#make").click(changeImgUrl);
+            $("#color").change(changeImgUrl);
+        });
+        -->
+        </script>
+    </head>
+    <body>
+        <h3>Hozumi cart 3</h3>
+        <img name="hozumi" id="gif" src="<%= request.url + "cart" %>" alt="hozumi">
+        <br />
+        <p>「ほずみ」または適当な３文字を入力してください。</p>
+        <input type="text" id="one" value="" maxlength="3" size="3" style="height: 50px; width: 110px;font-size:200%;">
+        <select id="color" name="id">
+            <option value="">default color</option>
+            <option value="87ceeb">blue</option>
+            <option value="ff6364">red</option>
+            <option value="ffff11">yellow</option>
+            <option value="ffa500">orange</option>
+            <option value="ee82ee">violet</option>
+            <option value="ff66c1">pink</option>
+            <option value="000000">black</option>
+        </select>
+        <button id="make">push</button>
+    </body>
+</html>
