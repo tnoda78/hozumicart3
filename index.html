@@ -13,7 +13,7 @@
               return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
             };
             var changeImgUrl = function() {
-                var url = "http://hozumicart3.herokuapp.com/cart?letter=" + $("#one").val();
+                var url = "http://hozumicart3.herokuapp.com/cart?letter=" + encodeURIComponent($("#one").val());
                 if ($("#color").val() != "") {
                     url = url + "&color=" + $("#color").val();
                 }
