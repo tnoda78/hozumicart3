@@ -32,15 +32,16 @@
                 <option value="000000">black</option>
             </select>
           </div>
-          <button id="make" class="btn btn-success">Show gif file</button>
+          <button id="make" class="btn btn-success">Show gif picture</button>
           <span style="font-size:50%;">(Please wait 5-10 seconds.)</span>
         </form>
         <hr />
         <p>It can save as a gif picture. </p>
-        <a class="btn btn-success" href="#" id="download" target="_blank">Download gif file</a>
+        <a class="btn btn-success" href="#" id="download" target="_blank">Download gif picture</a>
         <hr />
+        <p>Please share the created gif picture.</p>
         <span id="tweet-span">
-          <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
+          <a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </span>
         <hr />
@@ -77,6 +78,7 @@
               .attr('id', "tweet")
               .attr('class', "twitter-share-button")
               .attr('data-hashtags', "hozumicart3")
+              .attr('data-count', "none")
               .text('Tweet');
 
               $("#tweet-span").prepend(tweet);
