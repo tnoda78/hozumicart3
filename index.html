@@ -6,15 +6,25 @@
         <script>
         <!--
         $(document).ready(function(){
+            var getParameterByName = function(name) {
+              name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+              var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+              var results = regex.exec(location.search);
+              return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            };
             var changeImgUrl = function() {
                 var url = "http://hozumicart3.herokuapp.com/cart?letter=" + $("#one").val();
                 if ($("#color").val() != "") {
                     url = url + "&color=" + $("#color").val();
+                    pageUrl = pageUrl + "&color=" + $("#color").val();
                 }
                 $("#gif").attr("src", url);
             };
             $("#make").click(changeImgUrl);
             $("#color").change(changeImgUrl);
+            $("#one").val(getParameterByName("letter"));
+            $("#color").val(getParameterByName("color"));
+            changeImgUrl();
         });
         -->
         </script>
@@ -36,10 +46,10 @@
             <option value="ff66c1">pink</option>
             <option value="000000">black</option>
         </select>
-        <button id="make">push</button>
+        <button id="make">generate</button>
         <span style="font-size:50%;">(Please wait 5-10 seconds.)</span>
         <p>It can save as a gif picture. </p>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="hozumicart3">Tweet</a>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </body>
 </html>
