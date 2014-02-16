@@ -15,18 +15,24 @@
               var results = regex.exec(location.search);
               return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
             };
-            var changeImgUrl = function() {
+            var getImgUrl = function() {
                 var url = "http://hozumicart3.herokuapp.com/cart?letter=" + encodeURIComponent($("#one").val());
                 if ($("#color").val() != "") {
                     url = url + "&color=" + $("#color").val();
                 }
-                $("#gif").attr("src", url);
+                return url;
+            };
+            var changeImgUrl = function() {
+                $("#gif").attr("src", getImgUrl());
                 $("#color").blur();
                 $("#make").blur();
                 return false;
             };
             $("#make").click(changeImgUrl);
             $("#color").change(changeImgUrl);
+            $("#download").click(function() {
+              location.href = getImgUrl();
+            });
             $("#one").val(getParameterByName("letter"));
             $("#color").val(getParameterByName("color"));
             changeImgUrl();
@@ -59,13 +65,19 @@
                 <option value="000000">black</option>
             </select>
           </div>
-          <button id="make" class="btn btn-default">generate</button>
+          <button id="make" class="btn btn-success">Show gif file</button>
           <span style="font-size:50%;">(Please wait 5-10 seconds.)</span>
         </form>
         <hr />
         <p>It can save as a gif picture. </p>
+        <button type="button" id="download" name="download" class="btn btn-success">Download gif file</button>
+        <hr />
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        <hr />
+        <div class="footer" style="padding-bottom:30px;">
+          <span style="font-size:80%;color:a9a9a9;">powered by tnoda78</span>
+        </div>
     </body>
   </div>
 </html>
