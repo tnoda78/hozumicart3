@@ -24,15 +24,13 @@
             };
             var changeImgUrl = function() {
                 $("#gif").attr("src", getImgUrl());
+                $("#download").attr("href", getImgUrl());
                 $("#color").blur();
                 $("#make").blur();
                 return false;
             };
             $("#make").click(changeImgUrl);
             $("#color").change(changeImgUrl);
-            $("#download").click(function() {
-              location.href = getImgUrl();
-            });
             $("#one").val(getParameterByName("letter"));
             $("#color").val(getParameterByName("color"));
             changeImgUrl();
@@ -70,7 +68,7 @@
         </form>
         <hr />
         <p>It can save as a gif picture. </p>
-        <button type="button" id="download" name="download" class="btn btn-success">Download gif file</button>
+        <a class="btn btn-success" href="#" id="download" target="_blank">Download gif file</a>
         <hr />
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
