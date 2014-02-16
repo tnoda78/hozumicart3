@@ -16,7 +16,6 @@
                 var url = "http://hozumicart3.herokuapp.com/cart?letter=" + $("#one").val();
                 if ($("#color").val() != "") {
                     url = url + "&color=" + $("#color").val();
-                    pageUrl = pageUrl + "&color=" + $("#color").val();
                 }
                 $("#gif").attr("src", url);
             };
