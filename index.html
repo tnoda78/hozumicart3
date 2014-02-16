@@ -6,37 +6,6 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript" ></script>
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        <script>
-        <!--
-        $(document).ready(function(){
-            var getParameterByName = function(name) {
-              name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-              var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-              var results = regex.exec(location.search);
-              return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-            };
-            var getImgUrl = function() {
-                var url = "http://hozumicart3.herokuapp.com/cart?letter=" + encodeURIComponent($("#one").val());
-                if ($("#color").val() != "") {
-                    url = url + "&color=" + $("#color").val();
-                }
-                return url;
-            };
-            var changeImgUrl = function() {
-                $("#gif").attr("src", getImgUrl());
-                $("#download").attr("href", getImgUrl());
-                $("#color").blur();
-                $("#make").blur();
-                return false;
-            };
-            $("#make").click(changeImgUrl);
-            $("#color").change(changeImgUrl);
-            $("#one").val(getParameterByName("letter"));
-            $("#color").val(getParameterByName("color"));
-            changeImgUrl();
-        });
-        -->
-        </script>
     </head>
     <body>
       <div class="container">
@@ -70,12 +39,59 @@
         <p>It can save as a gif picture. </p>
         <a class="btn btn-success" href="#" id="download" target="_blank">Download gif file</a>
         <hr />
-        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        <span id="tweet-span">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tnoda78.github.io/hozumicart3/" data-hashtags="hozumicart3">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </span>
         <hr />
         <div class="footer" style="padding-bottom:30px;">
           <span style="font-size:80%;color:a9a9a9;">powered by tnoda78</span>
         </div>
+        <script>
+        $(document).ready(function(){
+            var getParameterByName = function(name) {
+              name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+              var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+              var results = regex.exec(location.search);
+              return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            };
+            var getImgUrl = function(baseurl) {
+                var url = baseurl + "?letter=" + encodeURIComponent($("#one").val());
+                if ($("#color").val() != "") {
+                    url = url + "&color=" + $("#color").val();
+                }
+                return url;
+            };
+            var changeImgUrl = function() {
+                $("#gif").attr("src", getImgUrl("http://hozumicart3.herokuapp.com/cart"));
+                $("#download").attr("href", getImgUrl("http://hozumicart3.herokuapp.com/cart"));
+                tweetSetup(getImgUrl("http://tnoda78.github.io/hozumicart3/"));
+                $("#color").blur();
+                $("#make").blur();
+                return false;
+            };
+            var tweetSetup = function(url) {
+              $(".twitter-share-button").remove();
+              var tweet = $('<a>')
+              .attr('href', "https://twitter.com/share")
+              .attr('id', "tweet")
+              .attr('class', "twitter-share-button")
+              .attr('data-hashtags', "hozumicart3")
+              .text('Tweet');
+
+              $("#tweet-span").prepend(tweet);
+              tweet.attr('data-url', url);
+              if (twttr.widgets) {
+                twttr.widgets.load();
+              }
+            };
+            $("#make").click(changeImgUrl);
+            $("#color").change(changeImgUrl);
+            $("#one").val(getParameterByName("letter"));
+            $("#color").val(getParameterByName("color"));
+            //changeImgUrl();
+        });
+        </script>
     </body>
   </div>
 </html>
