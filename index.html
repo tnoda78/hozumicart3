@@ -6,6 +6,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript" ></script>
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="http://platform.twitter.com/widgets.js"></script>
     </head>
     <body>
       <div class="container">
@@ -64,11 +65,11 @@
                 return url;
             };
             var changeImgUrl = function() {
-                $("#gif").attr("src", getImgUrl("http://hozumicart3.herokuapp.com/cart"));
                 $("#download").attr("href", getImgUrl("http://hozumicart3.herokuapp.com/cart"));
-                tweetSetup(getImgUrl("http://tnoda78.github.io/hozumicart3/"));
                 $("#color").blur();
                 $("#make").blur();
+                $("#gif").attr("src", getImgUrl("http://hozumicart3.herokuapp.com/cart"));
+                tweetSetup(getImgUrl("http://tnoda78.github.io/hozumicart3/"));
                 return false;
             };
             var tweetSetup = function(url) {
@@ -83,7 +84,7 @@
 
               $("#tweet-span").prepend(tweet);
               tweet.attr('data-url', url);
-              if (twttr.widgets) {
+              if (twttr && twttr.widgets) {
                 twttr.widgets.load();
               }
             };
