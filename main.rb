@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'erb'
-require './lib/cart_gif_generater'
+require './lib/cart_gif_generator'
 
 class MainApp < Sinatra::Base
 
@@ -18,14 +18,14 @@ class MainApp < Sinatra::Base
       send_file "images/cart.gif"
     else
       #get_gif_picture(letter, color)
-      generater = CartGifGenerater.new(
+      generator = CartGifGenerator.new(
         letter,
         color,
         "images/cart.gif",
         "config/position.yml",
         "fonts/ipagp.ttf"
       )
-      generater.gif_picture
+      generator.gif_picture
     end
   end
 end

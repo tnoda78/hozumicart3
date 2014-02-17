@@ -1,7 +1,7 @@
 require 'RMagick'
 require 'yaml'
 
-class CartGifGenerater
+class CartGifGenerator
 
   def initialize(letter, color, base_gif_file_path, position_file_path, font_file_path)
     @letter = letter
