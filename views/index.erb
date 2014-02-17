@@ -1,45 +1,78 @@
 <html> 
     <head>
         <title>Hozumi Cart 3</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="https://dl.dropboxusercontent.com/u/224715403/images/favicons/hozumicart3/favicon.ico">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript" ></script>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="http://platform.twitter.com/widgets.js"></script>
+    </head>
+    <body>
+      <div class="container">
+        <a href="https://github.com/tnoda78/hozumicart3"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/121cd7cbdc3e4855075ea8b558508b91ac463ac2/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_green_007200.png"></a>
+        <div class="" style="height: 60px;"></div>
+        <div class="hidden-lg" style="height: 60px;"></div>
+        <h3>Hozumi Cart 3</h3>
+        <img name="hozumi" id="gif" src="<%= @base_url %>" alt="hozumi">
+        <br />
+        <p>Please input "ほずみ", or three characters.</p>
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <input type="text" id="one" value="" maxlength="3" size="3" class="form-control input-lg" >
+          </div>
+          <div class="form-group">
+            <select id="color" name="id" class="form-control">
+                <option value="">-- Select Color</option>
+                <option value="87ceeb">blue</option>
+                <option value="ff6364">red</option>
+                <option value="ffff11">yellow</option>
+                <option value="ffa500">orange</option>
+                <option value="ee82ee">violet</option>
+                <option value="ff66c1">pink</option>
+                <option value="000000">black</option>
+            </select>
+          </div>
+          <button id="make" class="btn btn-success">Show gif picture</button>
+          <span style="font-size:50%;">(Please wait 5-10 seconds.)</span>
+        </form>
+        <hr />
+        <p>It can save as a gif picture. </p>
+        <a class="btn btn-success" href="#" id="download" target="_blank">Download gif picture</a>
+        <hr />
+        <hr />
+        <div class="footer" style="padding-bottom:30px;">
+          <span style="font-size:80%;color:a9a9a9;">powered by </span>
+        </div>
         <script>
-        <!--
         $(document).ready(function(){
-            var changeImgUrl = function() {
-                var url = "<%= request.url + "cart" %>?letter=" + $("#one").val();
+            var getParameterByName = function(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+                var results = regex.exec(location.search);
+                return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            };
+            var getImgUrl = function(baseurl) {
+                var url = baseurl + "?letter=" + encodeURIComponent($("#one").val());
                 if ($("#color").val() != "") {
                     url = url + "&color=" + $("#color").val();
                 }
-                $("#gif").attr("src", url);
+                return url;
+            };
+            var changeImgUrl = function() {
+                $("#download").attr("href", getImgUrl("<%= @base_url %>"));
+                $("#color").blur();
+                $("#make").blur();
+                $("#gif").attr("src", getImgUrl("<%= @base_url %>"));
+                return false;
             };
             $("#make").click(changeImgUrl);
             $("#color").change(changeImgUrl);
+            $("#one").val(getParameterByName("letter"));
+            $("#color").val(getParameterByName("color"));
+            changeImgUrl();
         });
-        -->
         </script>
-    </head>
-    <body>
-        <a href="https://github.com/tnoda78/hozumicart3"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
-        <h3>Hozumi Cart 3</h3>
-        <img name="hozumi" id="gif" src="<%= request.url + "cart" %>" alt="hozumi">
-        <br />
-        <p>Please input "ほずみ", or three characters.</p>
-        <input type="text" id="one" value="" maxlength="3" size="3" style="height: 50px; width: 110px;font-size:200%;">
-        <select id="color" name="id">
-            <option value="">-- Select Color</option>
-            <option value="87ceeb">blue</option>
-            <option value="ff6364">red</option>
-            <option value="ffff11">yellow</option>
-            <option value="ffa500">orange</option>
-            <option value="ee82ee">violet</option>
-            <option value="ff66c1">pink</option>
-            <option value="000000">black</option>
-        </select>
-        <button id="make">push</button>
-        <span style="font-size:50%;">(Please wait 5-10 seconds.)</span>
-        <p>It can save as a gif picture. </p>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="hozumicart3">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
     </body>
 </html>

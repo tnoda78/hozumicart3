@@ -54,6 +54,7 @@ class MainApp < Sinatra::Base
   end
 
   get '/' do
+    @base_url = "#{request.scheme}://#{request.host}:#{request.port}/cart"
     erb :index
   end
 
