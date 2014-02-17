@@ -14,7 +14,17 @@
         <div class="" style="height: 60px;"></div>
         <div class="hidden-lg" style="height: 60px;"></div>
         <h3>Hozumi Cart 3</h3>
-        <img name="hozumi" id="gif" src="<%= @base_url %>" alt="hozumi">
+        <img name="cart" id="gif" src="<%= @base_url %>" alt="cart">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait0.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait1.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait2.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait3.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait4.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait5.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait6.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait7.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait8.gif" alt="nowloading">
+        <img style="display:none;" name="nowloading" id="nowloading" src="http://tnoda78.github.io/hozumicart3/images/cart_wait9.gif" alt="nowloading">
         <br />
         <p>Please input "ほずみ", or three characters.</p>
         <form class="form-inline" role="form">
@@ -59,11 +69,21 @@
                 }
                 return url;
             };
+            var getNowLoadingGifUrl = function() {
+                return "http://tnoda78.github.io/hozumicart3/images/cart_wait" + Math.floor(Math.random() * 10) + ".gif";
+            };
             var changeImgUrl = function() {
+                $("#nowloading").attr("src", getNowLoadingGifUrl());
                 $("#download").attr("href", getImgUrl("<%= @base_url %>"));
                 $("#color").blur();
                 $("#make").blur();
                 $("#gif").attr("src", getImgUrl("<%= @base_url %>"));
+                $("#gif").hide();
+                $("#nowloading").show();
+                $("#gif").bind("load", function() {
+                  $("#gif").show();
+                  $("#nowloading").hide();
+                });
                 return false;
             };
             $("#make").click(changeImgUrl);
