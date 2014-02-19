@@ -3,7 +3,7 @@ hozumicart3
 
 http://tnoda78.github.io/hozumicart3/
 
-## Requirementt
+## Requirements
 
 - Ruby(1.9.3, 2.0.0, 2.1.0)
 - Bundler
