@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tnoda78/newhozumicart3/generator"
+	"github.com/tnoda78/hozumicart3/generator"
 )
 
 func main() {
