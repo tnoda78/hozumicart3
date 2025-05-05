@@ -88,6 +88,7 @@
             };
             $("#make").click(changeImgUrl);
             $("#color").change(changeImgUrl);
+            $("#one").keyup(changeImgUrl);
             $("#one").val(getParameterByName("letter"));
             $("#color").val(getParameterByName("color"));
             changeImgUrl();
