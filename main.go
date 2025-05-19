@@ -1,45 +1,41 @@
 package main
 
 import (
-	"fmt"
+	"bytes"
+	"encoding/base64"
 	"image/gif"
-	"log"
-	"net/http"
-	"os"
+	"syscall/js"
 
-	"github.com/gin-gonic/gin"
-	"github.com/tnoda78/hozumicart3/generator"
+	"example.com/countdown-gif/generator"
 )
 
-func main() {
-	port := os.Getenv("PORT")
+func generate(this js.Value, args []js.Value) interface{} {
+	// 入力値取得
+	word := args[0].String()
+	color := args[1].String()
 
-	if port == "" {
-		log.Fatal("$PORT must be set")
+	generator, err := generator.NewGenerator()
+	if err != nil {
+		return js.ValueOf(err.Error())
 	}
 
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.StaticFile("/", "views/index.html")
-	router.GET("/image", func(c *gin.Context) {
-		generator, err := generator.NewGenerator()
-		if err != nil {
-			c.String(http.StatusBadRequest, "ERROR.")
-			return
-		}
+	img, err := generator.GenerateImage(color, word)
+	if err != nil {
+		return js.ValueOf(err.Error())
+	}
 
-		color := c.DefaultQuery("color", "90CF4C")
-		letter := c.DefaultQuery("letter", "")
+	// GIF生成
+	var buf bytes.Buffer
+	if err := gif.EncodeAll(&buf, img); err != nil {
+		return js.ValueOf(err.Error())
+	}
 
-		img, err := generator.GenerateImage(fmt.Sprintf("#%s", color), letter)
-		if err != nil {
-			c.String(http.StatusBadRequest, "ERROR.")
-			return
-		}
+	// Base64エンコードして返す
+	encoded := base64.StdEncoding.EncodeToString(buf.Bytes())
+	return js.ValueOf(encoded)
+}
 
-		gif.EncodeAll(c.Writer, img)
-		c.Header("Content-Type", "image/gif")
-	})
-
-	router.Run(":" + port)
+func main() {
+	js.Global().Set("generate", js.FuncOf(generate))
+	select {}
 }
