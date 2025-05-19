@@ -1,2 +1,5 @@
 images/*.jpeg
 vendor
+
+main.wasm
+dist/main.wasm
