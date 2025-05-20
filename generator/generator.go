@@ -56,7 +56,12 @@ func (g *Generator) GenerateImage(hex string, text string) (*gif.GIF, error) {
 				colorR, colorG, colorB, _ := image.At(x, y).RGBA()
 
 				if colorR == 37522 && colorG == 53456 && colorB == 20560 {
-					image.Set(x, y, color.RGBA{rgba.R, rgba.G, rgba.B, uint8(rgba.A)})
+					image.Set(x, y, color.RGBA{
+						R: uint8(rgba.R * 255),
+						G: uint8(rgba.G * 255),
+						B: uint8(rgba.B * 255),
+						A: uint8(rgba.A * 255),
+					})
 				}
 			}
 		}
