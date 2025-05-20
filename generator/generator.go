@@ -70,7 +70,7 @@ func (g *Generator) GenerateImage(text string, colorStr string) (*gif.GIF, error
 						R: uint8(r),
 						G: uint8(gv),
 						B: uint8(b),
-						A: 1,
+						A: 255,
 					})
 				}
 			}
