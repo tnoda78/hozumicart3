@@ -6,11 +6,12 @@ import (
 	"image"
 	"image/color"
 	"image/gif"
+	"strconv"
+	"strings"
 
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
-	"gopkg.in/go-playground/colors.v1"
 )
 
 type Generator struct {
@@ -36,18 +37,27 @@ func NewGenerator() (*Generator, error) {
 	return generator, nil
 }
 
-func (g *Generator) GenerateImage(hex string, text string) (*gif.GIF, error) {
-	var code string
-	if hex == "" {
-		code = "92D050"
+func (g *Generator) GenerateImage(text string, colorStr string) (*gif.GIF, error) {
+	var rgbStr string
+
+	if colorStr == "" {
+		rgbStr = "37522,53456,20560"
 	} else {
-		code = hex
+		rgbStr = colorStr
 	}
-	hexColor, err := colors.ParseHEX("#" + code)
+	rgbs := strings.Split(rgbStr, ",")
+	r, err := strconv.Atoi(rgbs[0])
 	if err != nil {
 		return nil, err
 	}
-	rgba := hexColor.ToRGBA()
+	gv, err := strconv.Atoi(rgbs[1])
+	if err != nil {
+		return nil, err
+	}
+	b, err := strconv.Atoi(rgbs[2])
+	if err != nil {
+		return nil, err
+	}
 
 	for i, image := range g.Base.Image {
 		bounds := image.Bounds()
@@ -57,10 +67,10 @@ func (g *Generator) GenerateImage(hex string, text string) (*gif.GIF, error) {
 
 				if colorR == 37522 && colorG == 53456 && colorB == 20560 {
 					image.Set(x, y, color.RGBA{
-						R: uint8(rgba.R * 255),
-						G: uint8(rgba.G * 255),
-						B: uint8(rgba.B * 255),
-						A: uint8(rgba.A * 255),
+						R: uint8(r),
+						G: uint8(gv),
+						B: uint8(b),
+						A: 1,
 					})
 				}
 			}

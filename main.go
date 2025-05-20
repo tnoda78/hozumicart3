@@ -19,7 +19,7 @@ func generate(this js.Value, args []js.Value) interface{} {
 		return js.ValueOf(err.Error())
 	}
 
-	img, err := generator.GenerateImage(color, word)
+	img, err := generator.GenerateImage(word, color)
 	if err != nil {
 		return js.ValueOf(err.Error())
 	}
