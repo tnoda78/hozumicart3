@@ -3,6 +3,7 @@ package generator
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
@@ -37,36 +38,43 @@ func NewGenerator() (*Generator, error) {
 	return generator, nil
 }
 
+// カート本体の緑色。RGBA() は 16bit 値を返すため RGB(146,208,80) はこの値になる。
+const (
+	cartGreenR = 37522
+	cartGreenG = 53456
+	cartGreenB = 20560
+)
+
 func (g *Generator) GenerateImage(text string, colorStr string) (*gif.GIF, error) {
-	var rgbStr string
+	// 色未指定なら元の緑のまま塗り替えない。
+	var newColor *color.RGBA
+	if colorStr != "" {
+		rgbs := strings.Split(colorStr, ",")
+		if len(rgbs) != 3 {
+			return nil, fmt.Errorf("invalid color %q: want \"R,G,B\"", colorStr)
+		}
+		r, err := strconv.Atoi(rgbs[0])
+		if err != nil {
+			return nil, err
+		}
+		gv, err := strconv.Atoi(rgbs[1])
+		if err != nil {
+			return nil, err
+		}
+		b, err := strconv.Atoi(rgbs[2])
+		if err != nil {
+			return nil, err
+		}
+		newColor = &color.RGBA{R: uint8(r), G: uint8(gv), B: uint8(b), A: 255}
+	}
 
-	if colorStr == "" {
-		rgbStr = "37522,53456,20560"
-	} else {
-		rgbStr = colorStr
-	}
-	rgbs := strings.Split(rgbStr, ",")
-	r, err := strconv.Atoi(rgbs[0])
-	if err != nil {
-		return nil, err
-	}
-	gv, err := strconv.Atoi(rgbs[1])
-	if err != nil {
-		return nil, err
-	}
-	b, err := strconv.Atoi(rgbs[2])
-	if err != nil {
-		return nil, err
-	}
-
-	for i, image := range g.Base.Image {
-		bounds := image.Bounds()
-		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-			for x := bounds.Min.X; x < bounds.Max.X; x++ {
-				colorR, colorG, colorB, _ := image.At(x, y).RGBA()
-
-				if colorR == 37522 && colorG == 53456 && colorB == 20560 {
-					image.Set(x, y, color.RGBA{R: uint8(r), G: uint8(gv), B: uint8(b)})
+	for i, frame := range g.Base.Image {
+		// パレット GIF では Set が最近傍色へスナップするため、緑ピクセルを塗り直すのではなく
+		// パレットの緑エントリ自体を要求色へ差し替えて、要求色を正確に反映させる。
+		if newColor != nil {
+			for idx, c := range frame.Palette {
+				if cr, cg, cb, _ := c.RGBA(); cr == cartGreenR && cg == cartGreenG && cb == cartGreenB {
+					frame.Palette[idx] = *newColor
 				}
 			}
 		}
@@ -76,13 +84,13 @@ func (g *Generator) GenerateImage(text string, colorStr string) (*gif.GIF, error
 
 		// 1
 		x, y = getFirstCharacterPosition(i)
-		g.addCharactorToImage(image, x, y, cs[0])
+		g.addCharactorToImage(frame, x, y, cs[0])
 		// 2
 		x, y = getSecondCharacterPosition(i)
-		g.addCharactorToImage(image, x, y, cs[1])
+		g.addCharactorToImage(frame, x, y, cs[1])
 		// 3
 		x, y = getThirdCharacterPosition(i)
-		g.addCharactorToImage(image, x, y, cs[2])
+		g.addCharactorToImage(frame, x, y, cs[2])
 	}
 
 	return g.Base, nil

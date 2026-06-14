@@ -1,5 +1,8 @@
 images/*.jpeg
 vendor
+.DS_Store
 
 main.wasm
 dist/main.wasm
+
+.claude/settings.json
