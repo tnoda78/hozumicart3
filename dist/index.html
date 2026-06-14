@@ -34,24 +34,15 @@
       </select>
       </div>
     </form>
-    <script src="wasm_exec.js"></script>
     <script>
-      const go = new Go();
-      let wasmReady = false;
+      // WASM はワーカースレッドで実行し、生成中も UI をブロックしない。
+      const worker = new Worker('worker.js');
 
-      WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-        go.run(result.instance);
-        wasmReady = true;
-      });
-
-      const changeImage = () => {
-        if (!wasmReady) {
+      worker.onmessage = (e) => {
+        const { type, base64 } = e.data;
+        if (type !== 'result') {
           return;
         }
-        const word = $('#word').val();
-        const color = $('#color').val();
-        // Goでエクスポートした関数を呼び出し
-        const base64 = generate(word, color);
         if (base64) {
           $('#gif').attr('src', 'data:image/gif;base64,' + base64);
         } else {
@@ -59,7 +50,11 @@
         }
       };
 
-      $('#word').change(changeImage);
+      const changeImage = () => {
+        worker.postMessage({ word: $('#word').val(), color: $('#color').val() });
+      };
+
+      $('#word').on('input', changeImage);
       $("#color").change(changeImage);
     </script>
 </body>
